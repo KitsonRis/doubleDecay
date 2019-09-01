@@ -5,6 +5,8 @@ Double Decay Chi Squared Minimisation Algorithm
 """
 
 import sys
+
+import calculations
 import dataLoader
 
 def runner(args):
@@ -14,8 +16,16 @@ def runner(args):
     '''
     
     # load the data
-    data = dataLoader.dataLoader(args[1])
-    print(data)    
+    data = dataLoader.dataLoader(args[1])  
+    
+    # initial chi-square
+    initChi = calculations.calculateChiSquare(
+            float(args[2]),
+            float(args[3]),
+            float(args[4]),
+            float(args[5]),
+            data)
+    print('Initial chi-squared: %.2f' %(initChi))
 
 if __name__ == '__main__':
     
