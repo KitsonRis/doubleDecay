@@ -43,3 +43,23 @@ def calculateDoubleDecay(A, B, lam1, lam2, t):
     rhs = B * exp(-1 * lam2 * t)
     
     return lhs + rhs
+
+def getGrid(param):
+    '''
+    Return the grid of +/-10% of the parameter
+    :params param: the value to centre
+    :returns: list of the values wiht the given range
+    '''
+    
+    div = param * 0.01 
+    
+    upGrid = []
+    loGrid = []
+    for i in range(1,5):
+        upIn = param + (i * div)
+        upGrid.append(upIn)
+        dnIn = param - (i * div)
+        loGrid.append(dnIn)
+    
+    
+    return loGrid + [param] + upGrid
