@@ -5,6 +5,8 @@ Double Decay Chi Squared Minimisation Algorithm
 """
 
 import sys
+import matplotlib.pyplot as plt
+import pandas as pd
 
 import calculations
 import dataLoader
@@ -42,6 +44,7 @@ def runner(args):
     while breakout == False:
         
         counter += 1
+        print('Iteration %i...' %(counter))
         
         # set up the +/-10% grids for parameters
         gridA = calculations.getGrid(paramsNew.A)
@@ -65,13 +68,36 @@ def runner(args):
                             paramsNew = paramsTemp
         
         # check if can exit the loop
-        if chiDiff < float(args[6]):
+        #if chiDiff < float(args[6]):
+        if counter >= 2:
             breakout = True       
     
     #print the results of the parameters
     print('Calculation completed.')
     paramsNew.printResults()
     print('Iteration %i, Chi-Sq: %.2f' %(counter, chiNew))
+    
+    # get the model for plotting
+    yFit = []
+    xFit = []
+    for index, row in data.iterrows():
+        yFit.append(calculations.calculateDoubleDecay(paramsNew, row['t']))
+        xFit.append(row['t'])
+    # change the index 
+    modelData = pd.DataFrame({'t': xFit, 'yFit': yFit})
+    modelData.set_index('t', inplace = True)
+    
+    # add to the loaded data to form a plot
+    data.set_index('t', inplace = True)
+    plotData = data.join(modelData)
+    # plot the data
+    plt.scatter(plotData.index, plotData['c'], color = 'red')
+    plt.plot(plotData.index, plotData['yFit'], color = 'blue')
+    # make the plot pretty
+    plt.xlabel('Time [s]')
+    plt.ylabel('Count [s^-1]')
+    plt.title('Doube Exponential Decay')
+    plt.show()    
 
 if __name__ == '__main__':
     
@@ -81,8 +107,8 @@ if __name__ == '__main__':
         runner(sys.argv)   
         
     except Exception as err:
-        print('Calculation failed with error:')
+        print('Calculation failed:')
         print(err)
-    
+        
     print('\n....end')
   
