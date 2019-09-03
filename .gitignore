@@ -5,3 +5,4 @@ src/*.pyo
 *.pyc
 *.pyo
 projectReport.pdf
+.DS_Store
