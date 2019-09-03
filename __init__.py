@@ -68,8 +68,8 @@ def runner(args):
                             paramsNew = paramsTemp
         
         # check if can exit the loop
-        #if chiDiff < float(args[6]):
-        if counter >= 2:
+        if chiDiff < float(args[6]):
+        #if counter >= 2: # add in a force exit for simple debugging - comment out when not in use
             breakout = True       
     
     #print the results of the parameters
